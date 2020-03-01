@@ -17,14 +17,14 @@ namespace OrientadorVocacionalAPI.Controllers
 
         // GET api/values  
         [HttpGet]
-        public ActionResult<Dictionary<int, string>> Get()
+        public ActionResult<Dictionary<string, string>> Get()
         {
             return ValueSamples.MyValue;
         }
 
         // GET api/values/5  
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<string> Get(string id)
         {
             return ValueSamples.MyValue.GetValueOrDefault(id);
         }
@@ -40,14 +40,14 @@ namespace OrientadorVocacionalAPI.Controllers
 
         // PUT api/values/5  
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(string id, [FromBody] string value)
         {
             ValueSamples.MyValue.Add(id, value);
         }
 
         // DELETE api/values/5  
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
             ValueSamples.MyValue.Remove(id);
         }
