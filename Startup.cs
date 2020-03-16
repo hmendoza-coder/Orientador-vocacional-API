@@ -28,7 +28,7 @@ namespace OrientadorVocacionalAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddControllers();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             // Register Swagger  
             services.AddSwaggerGen(c =>
