@@ -8,8 +8,8 @@ namespace OrientadorVocacionalAPI.Models
 {
     public class Persona
     {
-
-        public string Nombre { get; set; }
+        public int IdPersona { get; set; }
+        public string Nombres { get; set; }
 
         public string ApellidoP { get; set; }
 
@@ -17,18 +17,14 @@ namespace OrientadorVocacionalAPI.Models
 
         public string Correo { get; set; }
 
-        public int IdCredencial { get; set; }
+        public string IdCredencial { get; set; }
 
         public string Sexo { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
 
-        public int idEstado { get; set; }
-
-        public int idMunicipio { get; set; }
-
-        public int idColonia { get; set; }
+        public int IdDomicilio { get; set; }
 
     }
 }
