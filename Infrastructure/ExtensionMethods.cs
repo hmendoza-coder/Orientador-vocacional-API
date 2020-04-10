@@ -31,11 +31,20 @@ namespace OrientadorVocacionalAPI
                 {
                     if (pro.Name.ToLower().Equals(column.ColumnName.ToLower())|| pro.Name.ToLower() == column.ColumnName.Replace("_", "").ToLower())
                         pro.SetValue(obj, dr[column.ColumnName], null);
-                    else
-                        continue;
                 }
             }
             return obj;
         }
+        public static async Task<List<T>> ToList<T>(this Task<DataTable> dt)
+        {
+            List<T> data = new List<T>();
+            foreach (DataRow row in dt.Result.Rows)
+            {
+                T item = GetItem<T>(row);
+                data.Add(item);
+            }
+            return data;
+        }
+
     }
 }

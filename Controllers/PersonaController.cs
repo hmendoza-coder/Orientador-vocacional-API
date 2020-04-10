@@ -21,12 +21,21 @@ namespace OrientadorVocacionalAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Persona> ObtenerPersonas()
+        public IEnumerable<Persona> GetPersonas()
         {
             Connection myConnection;
             myConnection = new Connection();
             return myConnection.CreateDataTable("SELECT * FROM persona").ToList<Persona>();
         }
+
+        //[HttpGet]
+        //[Route("async")]
+        //public async Task<IEnumerable<Persona>> ObtenerPersonasAsync()
+        //{
+        //    Connection myConnection;
+        //    myConnection = new Connection();
+        //    return await myConnection.CreateDataTableAsync("SELECT * FROM persona").ToList<Persona>();
+        //}
 
     }
 }
