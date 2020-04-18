@@ -17,7 +17,7 @@ namespace OrientadorVocacionalAPI.Models
 
         public string Correo { get; set; }
 
-        public string IdCredencial { get; set; }
+        public int IdCredencial { get; set; }
 
         public string Sexo { get; set; }
 
