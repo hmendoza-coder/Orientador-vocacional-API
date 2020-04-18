@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using OrientadorVocacionalAPI.Models;
 
@@ -14,18 +14,33 @@ namespace OrientadorVocacionalAPI.Controllers
     public class PersonaController : ControllerBase
     {
         private readonly ILogger<PersonaController> _logger;
+        private readonly PersonaRepository _personaRepository;
 
         public PersonaController(ILogger<PersonaController> logger)
         {
             _logger = logger;
+            _personaRepository = new PersonaRepository();
         }
 
         [HttpGet]
-        public IEnumerable<Persona> GetPersonas()
+        public ActionResult GetPersonas()
         {
-            Connection myConnection;
-            myConnection = new Connection();
-            return myConnection.CreateDataTable("SELECT * FROM persona").ToList<Persona>();
+            return Ok(new Response<List<Persona>>(true, "personas obtenidas correctamente", _personaRepository.SelectAll()));
+        }
+
+        [HttpPost]
+        public ActionResult Post(Persona persona)
+        {
+            try
+            {
+                _personaRepository.InsertPersona(persona);
+                return Ok(new Response(true, "Persona agregada correctamente"));
+            }
+            catch (Exception )
+            {
+                return BadRequest("Error al ingresar la persona a la base de datos");
+            }
+            
         }
 
         //[HttpGet]

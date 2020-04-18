@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
@@ -34,13 +35,47 @@ namespace OrientadorVocacionalAPI
             _connection = new MySqlConnection(connectionString);
         }
 
-        public void ExecuteScalar(string myScalarQuery)
+        public bool ExecuteScalar(string myScalarQuery)
         {
             MySqlCommand myCommand = new MySqlCommand(myScalarQuery, _connection);
-            myCommand.Connection.Open();
-            myCommand.ExecuteScalar();
+            
             myCommand.Connection.Close();
+            try
+            {
+                myCommand.Connection.Open();
+                myCommand.ExecuteScalar();
+                myCommand.Connection.Close();
+                return true;
+            }
+            catch (Exception)
+            {
+                myCommand.Connection.Close();
+                return false;
+            }
+
         }
+
+        //public async Task<bool> ExecutaSacalarAsync(string myScalarQuery)
+        //{
+        //    MySqlCommand myCommand = new MySqlCommand(myScalarQuery, _connection);
+
+        //    try
+        //    {
+        //        myCommand.Connection.OpenAsync();
+        //        await myCommand.ExecuteScalarAsync();
+        //        myCommand.Connection.Close();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        myCommand.Connection.CloseAsync();
+        //    }
+        //}
+
 
         public void ExecuteNonQuery(string myScalarQuery)
         {

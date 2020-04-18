@@ -35,15 +35,20 @@ namespace OrientadorVocacionalAPI
             }
             return obj;
         }
-        public static async Task<List<T>> ToList<T>(this Task<DataTable> dt)
+        //public static async Task<List<T>> ToList<T>(this Task<DataTable> dt)
+        //{
+        //    List<T> data = new List<T>();
+        //    foreach (DataRow row in dt.Result.Rows)
+        //    {
+        //        T item = GetItem<T>(row);
+        //        data.Add(item);
+        //    }
+        //    return data;
+        //}
+
+        public static string ToMysqlFormat(this DateTime date)
         {
-            List<T> data = new List<T>();
-            foreach (DataRow row in dt.Result.Rows)
-            {
-                T item = GetItem<T>(row);
-                data.Add(item);
-            }
-            return data;
+            return date.ToString("yyyy-MM-dd");
         }
 
     }
