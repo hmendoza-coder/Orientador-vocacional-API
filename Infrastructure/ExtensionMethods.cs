@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OrientadorVocacionalAPI
 {
@@ -59,6 +61,15 @@ namespace OrientadorVocacionalAPI
         public static bool IsNull(this object source)
         {
             return source == null || source == DBNull.Value;
+        }
+
+        public static IServiceCollection ConfigureAutomapper(this IServiceCollection services)
+        {
+            // Configuracion de automapper, para hacer conversiones entre entidades (Y mas)
+            // Se pasa la lista de ensablados ya que por medio de reflexion obtiene los Perfiles (configuracion de mapeos especificos)
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            return services;
         }
     }
 }
