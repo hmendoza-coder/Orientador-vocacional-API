@@ -42,7 +42,7 @@ namespace OrientadorVocacionalAPI.Controllers
         }
 
         [HttpGet("{idEstado}/{idMunicipio}")]
-        public ActionResult GetMunicipios(string idEstado,string idMunicipio)
+        public ActionResult GetMunicipios(string idEstado, string idMunicipio)
         {
             var municipio = _municipioRepository.SelectById(idEstado.ToUpperInvariant(), idMunicipio.ToUpperInvariant());
             if (!municipio.IsNullOrEmpty())
