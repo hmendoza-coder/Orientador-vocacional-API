@@ -51,5 +51,14 @@ namespace OrientadorVocacionalAPI
             return date.ToString("yyyy-MM-dd");
         }
 
+        public static bool IsNullOrEmpty(this object source)
+        {
+            return IsNull(source) || source.ToString().Trim().Length == 0;
+        }
+
+        public static bool IsNull(this object source)
+        {
+            return source == null || source == DBNull.Value;
+        }
     }
 }
