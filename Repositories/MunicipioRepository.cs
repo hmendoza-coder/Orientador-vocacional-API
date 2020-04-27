@@ -20,10 +20,14 @@ namespace OrientadorVocacionalAPI
             return _connection.CreateDataTable($"SELECT * FROM {nameof(Municipio)} ").ToList<Municipio>();
         }
 
-        public Municipio SelectById(string idEstado, string idMunicipio)
+        public IEnumerable<Municipio> SelectById(string idEstado)
         {
-            return _connection.CreateDataTable($"SELECT * FROM {nameof(Municipio)}").ToList<Municipio>().FirstOrDefault(e => e.IdEstado.Equals(idEstado) && e.IdMunicipio.Equals(idMunicipio));
+            return _connection.CreateDataTable($"SELECT * FROM {nameof(Municipio)}").ToList<Municipio>().Where(e => e.IdEstado.Equals(idEstado));
         }
 
+        public IEnumerable<Municipio> SelectById(string idEstado, string idMunicipio)
+        {
+            return _connection.CreateDataTable($"SELECT * FROM {nameof(Municipio)}").ToList<Municipio>().Where(e => e.IdEstado.Equals(idEstado) && e.IdMunicipio.Equals(idMunicipio));
+        }
     }
 }

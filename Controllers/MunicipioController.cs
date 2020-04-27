@@ -30,15 +30,26 @@ namespace OrientadorVocacionalAPI.Controllers
             return Ok(new Response<List<Municipio>>(true, "Municipios obtenidas correctamente", _municipioRepository.SelectAll()));
         }
 
-        //[HttpGet("{idEstado}")]
-        //public ActionResult GetEstados(string idEstado)
-        //{
-        //    var estado = _estadoRepository.SelectById(idEstado.ToUpperInvariant());
-        //    if (!estado.IsNullOrEmpty())
-        //        return Ok(new Response<Estado>(true, "estado encontrado", estado));
+        [HttpGet("{idEstado}")]
+        public ActionResult GetMunicipios(string idEstado)
+        {
+            var municipio = _municipioRepository.SelectById(idEstado.ToUpperInvariant());
+            if (!municipio.IsNullOrEmpty())
+                return Ok(new Response<List<Municipio>>(true, "municipios encontrados", municipio.ToList()));
 
-        //    return NotFound(new Response(false, "No se encontro el estado en la base de datos",
-        //        ErrorCode.RegistroNoEncontrado));
-        //}
+            return NotFound(new Response(false, "No se encontro el municipio en la base de datos",
+                ErrorCode.RegistroNoEncontrado));
+        }
+
+        [HttpGet("{idEstado}/{idMunicipio}")]
+        public ActionResult GetMunicipios(string idEstado,string idMunicipio)
+        {
+            var municipio = _municipioRepository.SelectById(idEstado.ToUpperInvariant(), idMunicipio.ToUpperInvariant());
+            if (!municipio.IsNullOrEmpty())
+                return Ok(new Response<List<Municipio>>(true, "municipio encontrado", municipio.ToList()));
+
+            return NotFound(new Response(false, "No se encontro el municipio en la base de datos",
+                ErrorCode.RegistroNoEncontrado));
+        }
     }
 }
