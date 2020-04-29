@@ -31,7 +31,7 @@ namespace OrientadorVocacionalAPI.Controllers
             if (!colonia.IsNullOrEmpty())
                 return Ok(new Response<List<Colonia>>(true, "colonias encontradas", colonia.ToList()));
 
-            return NotFound(new Response(false, "No se encontro el municipio en la base de datos",
+            return NotFound(new Response(false, "No se encontro la colonia en la base de datos",
                 ErrorCode.RegistroNoEncontrado));
         }
     }

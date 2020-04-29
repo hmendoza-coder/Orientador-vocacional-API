@@ -14,6 +14,7 @@ namespace OrientadorVocacionalAPI
         private string _database;
         private string _uid;
         private string _password;
+        private string _port;
 
         //Constructor
         public Connection()
@@ -28,8 +29,10 @@ namespace OrientadorVocacionalAPI
             _database = "orientador_vocacional";
             _uid = "root";
             _password = "xenia";
+            _port = "3306";
+
             string connectionString;
-            connectionString = "SERVER=" + _server + ";" + "DATABASE=" +
+            connectionString = "SERVER=" + _server + ";"  + "PORT=" + _port + ";" + "DATABASE=" +
                                _database + ";" + "UID=" + _uid + ";" + "PASSWORD=" + _password + ";";
 
             _connection = new MySqlConnection(connectionString);
