@@ -10,6 +10,8 @@ using OrientadorVocacionalAPI.Repositories;
 
 namespace OrientadorVocacionalAPI.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class PreguntaController : ControllerBase
     {
         private readonly IMapper _mapper;
