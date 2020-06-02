@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
@@ -71,5 +73,23 @@ namespace OrientadorVocacionalAPI
 
             return services;
         }
+
+        public static string NotNullToString(this object obj, string defualtValue = "")
+        {
+            if (obj == null || obj == DBNull.Value)
+                return defualtValue;
+
+            return obj.ToString();
+        }
+
+        public static int ToInt(this object obj)
+        {
+            return int.TryParse(obj.NotNullToString().Split('.')[0], NumberStyles.Integer,
+                CultureInfo.InvariantCulture.NumberFormat, out var result)
+                ? result
+                : 0;
+        }
+
+
     }
 }

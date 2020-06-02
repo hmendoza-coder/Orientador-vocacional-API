@@ -38,7 +38,7 @@ namespace OrientadorVocacionalAPI
             _connection = new MySqlConnection(connectionString);
         }
 
-        public bool ExecuteScalar(string myScalarQuery)
+        public object ExecuteScalar(string myScalarQuery)
         {
             MySqlCommand myCommand = new MySqlCommand(myScalarQuery, _connection);
             
@@ -46,9 +46,9 @@ namespace OrientadorVocacionalAPI
             try
             {
                 myCommand.Connection.Open();
-                myCommand.ExecuteScalar();
+                var resultado= myCommand.ExecuteScalar();
                 myCommand.Connection.Close();
-                return true;
+                return resultado;
             }
             catch (Exception)
             {
