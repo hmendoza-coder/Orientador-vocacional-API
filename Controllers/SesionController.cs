@@ -18,14 +18,14 @@ namespace OrientadorVocacionalAPI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILogger<SesionController> _logger;
-        private readonly SesionRepository _sesion;
+        private readonly SesionRepository _sesionRepository;
         private readonly CredencialRepository _credencialRepository;
 
         public SesionController(ILogger<SesionController> logger, IMapper mapper)
         {
             _mapper = mapper;
             _logger = logger;
-            _sesion = new SesionRepository();
+            _sesionRepository = new SesionRepository();
             _credencialRepository = new CredencialRepository();
         }
 
@@ -38,10 +38,10 @@ namespace OrientadorVocacionalAPI.Controllers
 
             if (estatus.Equals(Credencial.Estatus.Ok))
             {
-               Sesion sesion = new Sesion();
-               sesionDtOut.Estatus = Credencial.Estatus.Ok;
-               sesionDtOut.IdSesion = sesion.IdSesion;
-                //TODO insertar la sesion en la tabla
+                Sesion sesion = new Sesion {idPersona = credencial.IdPersona};
+                sesionDtOut.Estatus = Credencial.Estatus.Ok;
+                sesionDtOut.IdSesion = sesion.IdSesion;
+                _sesionRepository.Insert(sesion);
                 return Ok(new Response<SesionDtOut>(true, "Usuario logeado correctamente", sesionDtOut));
             }
 

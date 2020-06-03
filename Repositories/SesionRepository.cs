@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySqlX.XDevAPI.Relational;
 using OrientadorVocacionalAPI.Models;
 
 namespace OrientadorVocacionalAPI.Repositories
@@ -15,5 +16,10 @@ namespace OrientadorVocacionalAPI.Repositories
             _connection = new Connection();
         }
 
+        public void Insert(Sesion sesion)
+        {
+            string query = $"INSERT INTO sesion VALUES('{sesion.IdSesion}',{sesion.idPersona}, '{sesion.FechaInicio.ToMySqlDateTimeFormat()}', null)";
+            _connection.ExecuteNonQuery(query);
+        }
     }
 }

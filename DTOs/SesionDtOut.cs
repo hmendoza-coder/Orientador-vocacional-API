@@ -7,8 +7,6 @@ namespace OrientadorVocacionalAPI.DTOs
     {
         public string IdSesion { get; set; }
 
-        //[Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
-        //[JsonConverter(typeof(StringEnumConverter))]
         public Models.Credencial.Estatus Estatus { get; set; }
     }
 }

@@ -17,20 +17,23 @@ namespace OrientadorVocacionalAPI.Repositories
             _connection = new Connection();
         }
 
+        private Login ObtenerCredenciales(int idPersona)
+        {
+            string query = $"SELECT id_persona,password FROM persona p inner join credencial c using(id_persona) WHERE id_persona = {idPersona} ";
+            return _connection.CreateDataTable(query).ToList<Login>().FirstOrDefault();
+        }
+
         public Credencial.Estatus VerificarCredencial(CredencialDtoIn credencial)
         {
-            string query = $"SELECT count(*) FROM persona WHERE id_persona = '{credencial.IdPersona}'";
+            var login = ObtenerCredenciales(credencial.IdPersona);
 
-            if (_connection.ExecuteScalar(query).NotNullToString().ToInt() < 1)
+            if(login is null)
                 return Credencial.Estatus.UsuarioNoEncontrado;
-
-            query = $"SELECT * FROM persona p inner join credencial c using(id_persona) where password = '{credencial.Password}'";
-            var registros = _connection.ExecuteScalar(query).NotNullToString().ToInt();
-
-            if (registros < 1)
+            
+            if (!login.Password.Equals(credencial.Password))
                 return Credencial.Estatus.PasswordErronea;
 
-            return registros.Equals(1) ? Credencial.Estatus.Ok : Credencial.Estatus.Error;
+            return Credencial.Estatus.Ok;
         }
     }
 }

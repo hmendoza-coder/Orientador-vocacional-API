@@ -50,9 +50,14 @@ namespace OrientadorVocacionalAPI
         //    return data;
         //}
 
-        public static string ToMysqlFormat(this DateTime date)
+        public static string ToMysqlDateFormat(this DateTime date)
         {
             return date.ToString("yyyy-MM-dd");
+        }
+
+        public static string ToMySqlDateTimeFormat(this DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         public static bool IsNullOrEmpty(this object source)

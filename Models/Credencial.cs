@@ -11,8 +11,7 @@ namespace OrientadorVocacionalAPI.Models
         {
             UsuarioNoEncontrado = 0,
             PasswordErronea,
-            Ok,
-            Error
+            Ok
         }
         public string IdCredencial { get; set; }
 

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OrientadorVocacionalAPI.DTOs
+namespace OrientadorVocacionalAPI.Models
 {
-    public class CredencialDtoIn
+    public class Login
     {
         public int IdPersona { get; set; }
 
         public string Password { get; set; }
-
     }
 }

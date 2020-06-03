@@ -28,7 +28,7 @@ namespace OrientadorVocacionalAPI
                 .AppendLine(
                     "INSERT INTO persona (Nombres, Apellido_p, Apellido_m, Correo, Id_credencial, Sexo, Fecha_nacimiento, Id_domicilio) ")
                 .AppendLine(
-                    $"VALUES ('{persona.Nombres}','{persona.ApellidoP}','{persona.ApellidoM}', '{persona.Correo}', '{persona.IdCredencial}', '{persona.Sexo}', '{persona.FechaNacimiento.ToMysqlFormat()}', '{persona.IdDomicilio}')");
+                    $"VALUES ('{persona.Nombres}','{persona.ApellidoP}','{persona.ApellidoM}', '{persona.Correo}', '{persona.IdCredencial}', '{persona.Sexo}', '{persona.FechaNacimiento.ToMysqlDateFormat()}', '{persona.IdDomicilio}')");
             _connection.ExecuteScalar(query.ToString());
         }
 
