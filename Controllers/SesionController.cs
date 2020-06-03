@@ -20,6 +20,7 @@ namespace OrientadorVocacionalAPI.Controllers
         private readonly ILogger<SesionController> _logger;
         private readonly SesionRepository _sesionRepository;
         private readonly CredencialRepository _credencialRepository;
+        private readonly PersonaRepository _personaRepository;
 
         public SesionController(ILogger<SesionController> logger, IMapper mapper)
         {
@@ -27,9 +28,10 @@ namespace OrientadorVocacionalAPI.Controllers
             _logger = logger;
             _sesionRepository = new SesionRepository();
             _credencialRepository = new CredencialRepository();
+            _personaRepository = new PersonaRepository();
         }
 
-        [HttpGet]
+        [HttpGet("login")]
         public ActionResult Login([FromQuery] CredencialDtoIn credencial)
         {
 
@@ -38,7 +40,7 @@ namespace OrientadorVocacionalAPI.Controllers
 
             if (estatus.Equals(Credencial.Estatus.Ok))
             {
-                Sesion sesion = new Sesion {idPersona = credencial.IdPersona};
+                var sesion = new Sesion {idPersona = _personaRepository.ObtenerIdPersonaByCorreo(credencial.Correo)};
                 sesionDtOut.Estatus = Credencial.Estatus.Ok;
                 sesionDtOut.IdSesion = sesion.IdSesion;
                 _sesionRepository.Insert(sesion);

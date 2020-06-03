@@ -32,16 +32,11 @@ namespace OrientadorVocacionalAPI
             _connection.ExecuteScalar(query.ToString());
         }
 
-        //public async Task<Persona> Delete(string idPersona)
-        //{
-        //    var persona = FindById(idPersona);
-        //    return _connection.ExecuteScalar($"DELETE FROM persona where {nameof(Persona.IdPersona)} = {persona.Result.IdPersona}");
-        //}
-
-        //public async Task<Persona> FindById(string idPersona)
-        //{
-        //    return new Persona();
-        //}
+        public int ObtenerIdPersonaByCorreo(string correo)
+        {
+            string query = $"SELECT Id_persona FROM Persona where correo = '{correo}'";
+            return _connection.ExecuteScalar(query).NotNullToString().ToInt();
+        }
 
     }
 }

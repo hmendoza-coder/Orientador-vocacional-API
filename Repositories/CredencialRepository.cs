@@ -17,15 +17,15 @@ namespace OrientadorVocacionalAPI.Repositories
             _connection = new Connection();
         }
 
-        private Login ObtenerCredenciales(int idPersona)
+        private Login ObtenerCredenciales(string correo)
         {
-            string query = $"SELECT id_persona,password FROM persona p inner join credencial c using(id_persona) WHERE id_persona = {idPersona} ";
+            string query = $"SELECT id_persona,password FROM persona p inner join credencial c using(id_persona) WHERE correo = '{correo}' ";
             return _connection.CreateDataTable(query).ToList<Login>().FirstOrDefault();
         }
 
         public Credencial.Estatus VerificarCredencial(CredencialDtoIn credencial)
         {
-            var login = ObtenerCredenciales(credencial.IdPersona);
+            var login = ObtenerCredenciales(credencial.Correo);
 
             if(login is null)
                 return Credencial.Estatus.UsuarioNoEncontrado;
