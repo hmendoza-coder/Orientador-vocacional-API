@@ -51,5 +51,18 @@ namespace OrientadorVocacionalAPI.Controllers
             sesionDtOut.IdSesion = String.Empty;
             return BadRequest("Error al logear al usuario: " + sesionDtOut.Estatus);
         }
+
+        [HttpPatch("logout")]
+        public ActionResult Logout(string idSesion)
+        {
+            if (!_sesionRepository.Exists(idSesion))
+                return BadRequest("La sesion indicada no existe");
+
+            if (_sesionRepository.TieneFechaFin(idSesion))
+                return BadRequest("La sesion ya había sido cerrada anteriormente");
+
+                _sesionRepository.ActualizarFechaFin(idSesion);
+            return Ok("Sesion cerrada correctamente");
+        }
     }
 }
