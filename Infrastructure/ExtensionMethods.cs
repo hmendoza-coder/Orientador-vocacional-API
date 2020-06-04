@@ -34,7 +34,11 @@ namespace OrientadorVocacionalAPI
                 foreach (PropertyInfo pro in temp.GetProperties())
                 {
                     if (pro.Name.ToLower().Equals(column.ColumnName.ToLower())|| pro.Name.ToLower() == column.ColumnName.Replace("_", "").ToLower())
+                    {
+                        if (dr[column.ColumnName].IsNull())
+                            continue;
                         pro.SetValue(obj, dr[column.ColumnName], null);
+                    }
                 }
             }
             return obj;

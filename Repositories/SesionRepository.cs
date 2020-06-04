@@ -40,5 +40,16 @@ namespace OrientadorVocacionalAPI.Repositories
             string query = $"SELECT fecha_fin FROM sesion WHERE id_sesion = '{idSesion}'";
             return !_connection.ExecuteScalar(query).NotNullToString().IsNullOrEmpty();
         }
+
+        public bool SesionValida(string idSesion)
+        {
+            return Exists(idSesion) && !TieneFechaFin(idSesion);
+        }
+
+        public Sesion ObtenerSesion(string idSesion)
+        {
+            string query = $"SELECT * FROM sesion WHERE id_sesion = '{idSesion}'";
+            return _connection.CreateDataTable(query).ToList<Sesion>().FirstOrDefault();
+        }
     }
 }

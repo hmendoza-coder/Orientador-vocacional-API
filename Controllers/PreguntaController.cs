@@ -17,18 +17,25 @@ namespace OrientadorVocacionalAPI.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<PreguntaController> _logger;
         private readonly PreguntaRepository _preguntaRepository;
+        private readonly SesionRepository _sesionRepository;
+        private readonly RespuestaRepository _respuestaRepository;
 
         public PreguntaController(ILogger<PreguntaController> logger, IMapper mapper)
         {
             _mapper = mapper;
             _logger = logger;
             _preguntaRepository = new PreguntaRepository();
+            _sesionRepository = new SesionRepository();
+            _respuestaRepository = new RespuestaRepository();
         }
 
         [HttpGet]
-        public ActionResult ObtenerPrimerPregunta()
+        public ActionResult ObtenerPregunta(string idSesion)
         {
-            return Ok(new Response<Pregunta>(true, "Primer pregunta obtenida correctamente", _preguntaRepository.ObtenerPrimerPregunta()));
+            if (!_sesionRepository.SesionValida(idSesion))
+                return BadRequest("El id de sesión proporcionado no es valido");
+
+            return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", _preguntaRepository.ObtenerPregunta(idSesion)));
         }
     }
 }
