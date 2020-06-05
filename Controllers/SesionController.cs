@@ -40,7 +40,7 @@ namespace OrientadorVocacionalAPI.Controllers
 
             if (estatus.Equals(Credencial.Estatus.Ok))
             {
-                var sesion = new Sesion {idPersona = _personaRepository.ObtenerIdPersonaByCorreo(credencial.Correo)};
+                var sesion = new Sesion {IdPersona = _personaRepository.ObtenerIdPersonaByCorreo(credencial.Correo)};
                 sesionDtOut.Estatus = Credencial.Estatus.Ok;
                 sesionDtOut.IdSesion = sesion.IdSesion;
                 _sesionRepository.Insert(sesion);

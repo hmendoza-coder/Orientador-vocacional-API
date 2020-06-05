@@ -14,7 +14,7 @@ namespace OrientadorVocacionalAPI.Models
         }
         public string IdSesion { get; set; }
 
-        public int idPersona { get; set; }
+        public int IdPersona { get; set; }
 
         public DateTime FechaInicio { get; set; }
 

@@ -38,5 +38,10 @@ namespace OrientadorVocacionalAPI
             return _connection.ExecuteScalar(query).NotNullToString().ToInt();
         }
 
+        public bool Exists(int idPersona)
+        {
+            string query = $"SELECT COUNT(*) FROM persona WHERE id_persona = {idPersona}";
+            return _connection.ExecuteScalar(query).NotNullToString().ToInt() > 0;
+        }
     }
 }

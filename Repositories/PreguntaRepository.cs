@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.OpenApi.Expressions;
 using OrientadorVocacionalAPI.Models;
 
 namespace OrientadorVocacionalAPI.Repositories
@@ -12,12 +13,14 @@ namespace OrientadorVocacionalAPI.Repositories
         private readonly Connection _connection;
         private readonly RespuestaRepository _respuestaRepository;
         private readonly SesionRepository _sesionRepository;
+        private readonly AreaRepository _areaRepository;
 
         public PreguntaRepository()
         {
             _connection = new Connection();
             _respuestaRepository = new RespuestaRepository();
             _sesionRepository = new SesionRepository();
+            _areaRepository = new AreaRepository();
         }
 
         public Pregunta ObtenerPrimerPregunta()
@@ -34,10 +37,11 @@ namespace OrientadorVocacionalAPI.Repositories
             var sesion = _sesionRepository.ObtenerSesion(idSesion);
             var pregunta = new Pregunta();
 
-            if (!_respuestaRepository.TieneRespuestas(sesion.idPersona))
-                return pregunta = ObtenerPrimerPregunta();
+            if (!_respuestaRepository.TieneRespuestas(sesion.IdPersona))
+                return ObtenerPrimerPregunta();
 
             var ultimaRespuesta = _respuestaRepository.ObtenerUltimaRespuesta(idSesion);
+            var area = _areaRepository.ObtenerArea(ultimaRespuesta.IdPregunta);
 
             if (ultimaRespuesta.IdRespuesta.Equals(OpcionRespuesta.Nada))
             {
@@ -49,6 +53,12 @@ namespace OrientadorVocacionalAPI.Repositories
             }
 
             return pregunta;
+        }
+
+        public bool Exists(int idPregunta)
+        {
+            string query = $"SELECT COUNT(*) FROM pregunta WHERE id_pregunta = {idPregunta}";
+            return _connection.ExecuteScalar(query).NotNullToString().ToInt() > 0;
         }
 
     }

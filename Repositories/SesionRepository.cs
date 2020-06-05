@@ -18,7 +18,7 @@ namespace OrientadorVocacionalAPI.Repositories
 
         public void Insert(Sesion sesion)
         {
-            string query = $"INSERT INTO sesion VALUES('{sesion.IdSesion}',{sesion.idPersona}, '{sesion.FechaInicio.ToMySqlDateTimeFormat()}', null)";
+            string query = $"INSERT INTO sesion VALUES('{sesion.IdSesion}',{sesion.IdPersona}, '{sesion.FechaInicio.ToMySqlDateTimeFormat()}', null)";
             _connection.ExecuteNonQuery(query);
         }
 

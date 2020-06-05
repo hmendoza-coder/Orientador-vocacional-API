@@ -28,5 +28,12 @@ namespace OrientadorVocacionalAPI.Repositories
                 $"SELECT r.* FROM respuesta r INNER JOIN sesion s using(id_persona) WHERE id_sesion = '{sesion}' ORDER BY id_respuesta desc LIMIT 1";
             return _connection.CreateDataTable(query).ToList<Respuesta>().FirstOrDefault();
         }
+
+        public void GuardarRespuesta(Respuesta respuesta)
+        {
+            string query = $"INSERT INTO respuesta VALUES(null,'{respuesta.IdSesion}',{respuesta.IdPregunta},{respuesta.IdOpcion})";
+            _connection.ExecuteNonQuery(query);
+        }
+
     }
 }
