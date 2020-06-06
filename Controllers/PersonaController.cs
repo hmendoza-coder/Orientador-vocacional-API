@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrientadorVocacionalAPI.DTOs;
 using OrientadorVocacionalAPI.Models;
+using OrientadorVocacionalAPI.Repositories;
 
 namespace OrientadorVocacionalAPI.Controllers
 {
@@ -17,12 +18,16 @@ namespace OrientadorVocacionalAPI.Controllers
     {
         private readonly ILogger<PersonaController> _logger;
         private readonly PersonaRepository _personaRepository;
+        private readonly CredencialRepository _credencialRepository;
+        private readonly DomicilioRepository _domicilioRepository;
         private readonly IMapper _mapper;
 
         public PersonaController(ILogger<PersonaController> logger, IMapper mapper)
         {
             _logger = logger;
             _personaRepository = new PersonaRepository();
+            _credencialRepository = new CredencialRepository();
+            _domicilioRepository = new DomicilioRepository();
             _mapper = mapper;
         }
 
@@ -48,18 +53,45 @@ namespace OrientadorVocacionalAPI.Controllers
         //}
 
         [HttpPost]
-        public ActionResult Post(PersonaDtoIn personaDtoIn)
+        public ActionResult AgregarPersona(PersonaDtoIn personaDtoIn)
         {
 
             Persona persona = _mapper.Map<Persona>(personaDtoIn);
 
+            if(_personaRepository.Exists(persona.Correo))
+                return BadRequest("El correo proporcionado ya existe en la base");
+
             try
             {
                 _personaRepository.InsertPersona(persona);
+
+                persona.IdPersona = _personaRepository.ObtenerIdPersonaByCorreo(persona.Correo);
+
+                if(persona.IdPersona.IsNull() || persona.IdPersona.Equals(0))
+                    return BadRequest("Error al ingresar la persona a la base de datos");
+
+                Credencial credencial = new Credencial
+                {
+                    Password = personaDtoIn.Password, IdPersona = persona.IdPersona
+                };
+
+                _credencialRepository.Insert(credencial);
+
+                Domicilio domicilio = new Domicilio
+                {
+                    IdMunicipio = personaDtoIn.IdMunicipio,
+                    IdColonia = personaDtoIn.IdColonia,
+                    IdEstado = personaDtoIn.IdEstado,
+                    IdPersona = persona.IdPersona
+                };
+
+                _domicilioRepository.Insert(domicilio);
+
                 return Ok(new Response(true, "Persona agregada correctamente"));
             }
             catch (Exception)
             {
+                _personaRepository.DeleteByCorreo(persona.Correo);
                 return BadRequest("Error al ingresar la persona a la base de datos");
             }
 

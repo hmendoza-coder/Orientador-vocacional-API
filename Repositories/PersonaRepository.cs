@@ -26,9 +26,9 @@ namespace OrientadorVocacionalAPI
         {
             StringBuilder query = new StringBuilder()
                 .AppendLine(
-                    "INSERT INTO persona (Nombres, Apellido_p, Apellido_m, Correo, Id_credencial, Sexo, Fecha_nacimiento, Id_domicilio) ")
+                    "INSERT INTO persona (Nombres, Apellido_p, Apellido_m, Correo, Sexo, Fecha_nacimiento) ")
                 .AppendLine(
-                    $"VALUES ('{persona.Nombres}','{persona.ApellidoP}','{persona.ApellidoM}', '{persona.Correo}', '{persona.IdCredencial}', '{persona.Sexo}', '{persona.FechaNacimiento.ToMysqlDateFormat()}', '{persona.IdDomicilio}')");
+                    $"VALUES ('{persona.Nombres}','{persona.ApellidoP}','{persona.ApellidoM}', '{persona.Correo}', '{persona.Sexo}', '{persona.FechaNacimiento.ToMysqlDateFormat()}')");
             _connection.ExecuteScalar(query.ToString());
         }
 
@@ -42,6 +42,18 @@ namespace OrientadorVocacionalAPI
         {
             string query = $"SELECT COUNT(*) FROM persona WHERE id_persona = {idPersona}";
             return _connection.ExecuteScalar(query).NotNullToString().ToInt() > 0;
+        }
+
+        public bool Exists(string correo)
+        {
+            string query = $"SELECT COUNT(*) FROM persona WHERE correo = {correo}";
+            return _connection.ExecuteScalar(query).NotNullToString().ToInt() > 0;
+        }
+
+        public void DeleteByCorreo(string correo)
+        {
+            string query = $"DELETE FROM persona where correo = '{correo}'";
+            _connection.ExecuteNonQuery(query);
         }
     }
 }

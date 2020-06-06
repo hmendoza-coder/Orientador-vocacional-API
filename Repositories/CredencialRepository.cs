@@ -35,5 +35,11 @@ namespace OrientadorVocacionalAPI.Repositories
 
             return Credencial.Estatus.Ok;
         }
+
+        public void Insert(Credencial credencial)
+        {
+            string query = $"INSERT INTO credencial VALUES ({credencial.IdPersona}, '{credencial.Password}')";
+            _connection.ExecuteNonQuery(query);
+        }
     }
 }

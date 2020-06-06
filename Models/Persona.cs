@@ -16,15 +16,12 @@ namespace OrientadorVocacionalAPI.Models
         public string ApellidoM { get; set; }
 
         public string Correo { get; set; }
-
-        public int IdCredencial { get; set; }
-
+        
         public string Sexo { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
 
-        public int IdDomicilio { get; set; }
 
     }
 }

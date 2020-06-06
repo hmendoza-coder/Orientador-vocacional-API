@@ -13,7 +13,7 @@ namespace OrientadorVocacionalAPI.Models
             PasswordErronea,
             Ok
         }
-        public string IdCredencial { get; set; }
+        public int IdPersona { get; set; }
 
         public string Password { get; set; }
     }
