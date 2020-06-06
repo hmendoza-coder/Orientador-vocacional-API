@@ -41,42 +41,29 @@ namespace OrientadorVocacionalAPI.Controllers
             var pregunta = new Pregunta();
 
             if (!_respuestaRepository.TieneRespuestas(sesion.IdSesion))
-                pregunta = _preguntaRepository.ObtenerPrimerPregunta();
+                return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", _preguntaRepository.ObtenerPrimerPregunta()));
 
             var ultimaRespuesta = _respuestaRepository.ObtenerUltimaRespuesta(idSesion);
 
-            var area = _areaRepository.ObtenerArea(ultimaRespuesta.IdPregunta);
+            var ultimaArea = _areaRepository.ObtenerArea(ultimaRespuesta.IdPregunta);
+            
+            List<int> listaAreasDescartadas = _areaRepository.ObtenerAreasDescartadas(idSesion).Select(descartada => descartada.IdArea).ToList();
 
-            var areasDescartadas = _areaRepository.ObtenerAreasDescartadas(idSesion);
-
-            List<int> listaAreas = new List<int>();
-
-            foreach (Area descartada in areasDescartadas)
+            if (ultimaRespuesta.IdRespuesta.Equals(OpcionRespuesta.Nada))
             {
-                listaAreas.Add(descartada.IdArea);
+                listaAreasDescartadas.Add(ultimaArea.IdArea);
             }
 
-            var areasDisponibles = _areaRepository.ObtenerAreasExcepto(listaAreas);
+            var areasDisponibles = _areaRepository.ObtenerAreasExcepto(listaAreasDescartadas);
 
             if (areasDisponibles.Count().Equals(0))
             {
-                //Se acabaron las areas
+                //Se acabaron las areas, hacer algo
             }
 
             var randgen = new Random();
             var areaRandom = areasDisponibles.ElementAtOrDefault(randgen.Next(0,areasDisponibles.Count()));
 
-            //Validar que no se hayan acabado las areas
-
-            if (ultimaRespuesta.IdRespuesta.Equals(OpcionRespuesta.Nada))
-            {
-                //CAMBIAR AREA, EXCLUYENDO EL AREA ACTUAL
-            }
-            else
-            {
-                //QUEDARSE EN EL AREA ACTUAL
-            }
-            
             return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente",pregunta));
         }
     }
