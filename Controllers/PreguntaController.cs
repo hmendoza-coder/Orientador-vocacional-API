@@ -19,6 +19,7 @@ namespace OrientadorVocacionalAPI.Controllers
         private readonly PreguntaRepository _preguntaRepository;
         private readonly SesionRepository _sesionRepository;
         private readonly RespuestaRepository _respuestaRepository;
+        private readonly AreaRepository _areaRepository;
 
         public PreguntaController(ILogger<PreguntaController> logger, IMapper mapper)
         {
@@ -27,6 +28,7 @@ namespace OrientadorVocacionalAPI.Controllers
             _preguntaRepository = new PreguntaRepository();
             _sesionRepository = new SesionRepository();
             _respuestaRepository = new RespuestaRepository();
+            _areaRepository = new AreaRepository();
         }
 
         [HttpGet]
@@ -35,7 +37,42 @@ namespace OrientadorVocacionalAPI.Controllers
             if (!_sesionRepository.SesionValida(idSesion))
                 return BadRequest("El id de sesión proporcionado no es valido");
 
-            return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", _preguntaRepository.ObtenerPregunta(idSesion)));
+            var sesion = _sesionRepository.ObtenerSesion(idSesion);
+            var pregunta = new Pregunta();
+
+            if (!_respuestaRepository.TieneRespuestas(sesion.IdSesion))
+                pregunta = _preguntaRepository.ObtenerPrimerPregunta();
+
+            var ultimaRespuesta = _respuestaRepository.ObtenerUltimaRespuesta(idSesion);
+
+            var area = _areaRepository.ObtenerArea(ultimaRespuesta.IdPregunta);
+
+            var areasDescartadas = _areaRepository.ObtenerAreasDescartadas(idSesion);
+
+            var areasTotales = _areaRepository.ObtenerAreas();
+            var areasDisponibles = areasTotales.Except(areasDescartadas);
+
+            if (areasDisponibles.Count().Equals(0))
+            {
+                //Se acabaron las areas
+            }
+            areasDisponibles = areasDisponibles.Where(x => x.IdArea != area.IdArea);
+
+            var randgen = new Random();
+            var areaRandom = areasDisponibles.ElementAtOrDefault(randgen.Next(0,areasDisponibles.Count()));
+
+            //Validar que no se hayan acabado las areas
+
+            if (ultimaRespuesta.IdRespuesta.Equals(OpcionRespuesta.Nada))
+            {
+                //CAMBIAR AREA, EXCLUYENDO EL AREA ACTUAL
+            }
+            else
+            {
+                //QUEDARSE EN EL AREA ACTUAL
+            }
+            
+            return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente",pregunta));
         }
     }
 }

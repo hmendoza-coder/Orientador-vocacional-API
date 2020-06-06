@@ -16,16 +16,16 @@ namespace OrientadorVocacionalAPI.Repositories
             _connection = new Connection();
         }
 
-        public bool TieneRespuestas(int idPersona)
+        public bool TieneRespuestas(string idSesion)
         {
-            string query = $"SELECT COUNT(*) FROM respuesta WHERE id_persona ={idPersona}";
+            string query = $"SELECT COUNT(*) FROM respuesta WHERE id_sesion ='{idSesion}'";
             return _connection.ExecuteScalar(query).NotNullToString().ToInt() > 0;
         }
 
         public Respuesta ObtenerUltimaRespuesta(string sesion)
         {
             string query =
-                $"SELECT r.* FROM respuesta r INNER JOIN sesion s using(id_persona) WHERE id_sesion = '{sesion}' ORDER BY id_respuesta desc LIMIT 1";
+                $"SELECT * FROM respuesta WHERE id_sesion = '{sesion}' ORDER BY id_respuesta desc LIMIT 1";
             return _connection.CreateDataTable(query).ToList<Respuesta>().FirstOrDefault();
         }
 
@@ -34,6 +34,6 @@ namespace OrientadorVocacionalAPI.Repositories
             string query = $"INSERT INTO respuesta VALUES(null,'{respuesta.IdSesion}',{respuesta.IdPregunta},{respuesta.IdOpcion})";
             _connection.ExecuteNonQuery(query);
         }
-
+        
     }
 }
