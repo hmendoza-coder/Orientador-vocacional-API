@@ -45,5 +45,13 @@ namespace OrientadorVocacionalAPI.Repositories
             return _connection.CreateDataTable(query.NotNullToString()).ToList<Area>();
         }
 
+        public List<Area> ObtenerAreasExcepto(List<int> areas)
+        { 
+            StringBuilder query = new StringBuilder()
+                .AppendLine("SELECT * FROM area ")
+                .AppendLine($"WHERE id_area NOT IN ({string.Join(", ", areas)})");
+            return _connection.CreateDataTable(query.NotNullToString()).ToList<Area>();
+        }
+
     }
 }

@@ -49,14 +49,19 @@ namespace OrientadorVocacionalAPI.Controllers
 
             var areasDescartadas = _areaRepository.ObtenerAreasDescartadas(idSesion);
 
-            var areasTotales = _areaRepository.ObtenerAreas();
-            var areasDisponibles = areasTotales.Except(areasDescartadas);
+            List<int> listaAreas = new List<int>();
+
+            foreach (Area descartada in areasDescartadas)
+            {
+                listaAreas.Add(descartada.IdArea);
+            }
+
+            var areasDisponibles = _areaRepository.ObtenerAreasExcepto(listaAreas);
 
             if (areasDisponibles.Count().Equals(0))
             {
                 //Se acabaron las areas
             }
-            areasDisponibles = areasDisponibles.Where(x => x.IdArea != area.IdArea);
 
             var randgen = new Random();
             var areaRandom = areasDisponibles.ElementAtOrDefault(randgen.Next(0,areasDisponibles.Count()));
