@@ -34,6 +34,12 @@ namespace OrientadorVocacionalAPI.Repositories
             string query = $"INSERT INTO respuesta VALUES(null,'{respuesta.IdSesion}',{respuesta.IdPregunta},{respuesta.IdOpcion})";
             _connection.ExecuteNonQuery(query);
         }
-        
+
+        public int ContarRespuestas(string idSesion)
+        {
+            string query = $"SELECT COUNT(*) FROM respuesta WHERE id_sesion ='{idSesion}'";
+            return _connection.ExecuteScalar(query).NotNullToString().ToInt();
+        }
+
     }
 }

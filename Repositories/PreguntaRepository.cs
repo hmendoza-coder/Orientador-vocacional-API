@@ -43,5 +43,11 @@ namespace OrientadorVocacionalAPI.Repositories
 
             return _connection.CreateDataTable(query.ToString()).ToList<Pregunta>().FirstOrDefault();
         }
+        
+        public int ContarTotalPreguntas()
+        {
+            string query = "SELECT COUNT(*) FROM pregunta";
+            return _connection.ExecuteScalar(query).NotNullToString().ToInt();
+        }
     }
 }

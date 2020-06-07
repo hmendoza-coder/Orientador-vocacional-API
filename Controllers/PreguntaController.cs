@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrientadorVocacionalAPI.Config;
 using OrientadorVocacionalAPI.Models;
 using OrientadorVocacionalAPI.Repositories;
 
@@ -31,6 +32,12 @@ namespace OrientadorVocacionalAPI.Controllers
             _areaRepository = new AreaRepository();
         }
 
+        private bool CuestionarioFinalizado(string idSesion)
+        {
+            int cantidadPreguntas = _preguntaRepository.ContarTotalPreguntas() / ConfiguracionGlobal.INDICE_PARO;
+            return _respuestaRepository.ContarRespuestas(idSesion).Equals(cantidadPreguntas);
+        }
+
         [HttpGet]
         public ActionResult ObtenerPregunta(string idSesion)
         {
@@ -38,6 +45,9 @@ namespace OrientadorVocacionalAPI.Controllers
                 return BadRequest("El id de sesión proporcionado no es valido");
 
             var sesion = _sesionRepository.ObtenerSesion(idSesion);
+
+            if(CuestionarioFinalizado(idSesion))
+                return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", ConfiguracionGlobal.PREGUNTA_FINAL));
 
             if (!_respuestaRepository.TieneRespuestas(sesion.IdSesion))
                 return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", _preguntaRepository.ObtenerPrimerPregunta()));
@@ -49,20 +59,16 @@ namespace OrientadorVocacionalAPI.Controllers
             List<int> listaAreasDescartadas = _areaRepository.ObtenerAreasDescartadas(idSesion).Select(descartada => descartada.IdArea).ToList();
 
             if (ultimaRespuesta.IdRespuesta.Equals(OpcionRespuesta.Nada))
-            {
                 listaAreasDescartadas.Add(ultimaArea.IdArea);
-            }
 
-            var pregunta = new Pregunta();
+            Pregunta pregunta;
             do
             {
                 var areasDisponibles = _areaRepository.ObtenerAreasExcepto(listaAreasDescartadas);
 
                 if (areasDisponibles.Count().Equals(0))
-                {
-                    //Se acabaron las areas, hacer algo
-                }
-
+                    return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", ConfiguracionGlobal.PREGUNTA_FINAL));
+                
                 var areaRandom = areasDisponibles.ElementAtOrDefault(new Random().Next(0, areasDisponibles.Count()))
                     .IdArea;
 
