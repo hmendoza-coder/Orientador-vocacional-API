@@ -53,22 +53,23 @@ namespace OrientadorVocacionalAPI.Controllers
                 listaAreasDescartadas.Add(ultimaArea.IdArea);
             }
 
-            var areasDisponibles = _areaRepository.ObtenerAreasExcepto(listaAreasDescartadas);
-
-            if (areasDisponibles.Count().Equals(0))
-            {
-                //Se acabaron las areas, hacer algo
-            }
-
-            var areaRandom = areasDisponibles.ElementAtOrDefault(new Random().Next(0,areasDisponibles.Count())).IdArea;
-
             var pregunta = new Pregunta();
-            while (pregunta.IsNull() || pregunta.IdPregunta.Equals(0))
+            do
             {
+                var areasDisponibles = _areaRepository.ObtenerAreasExcepto(listaAreasDescartadas);
+
+                if (areasDisponibles.Count().Equals(0))
+                {
+                    //Se acabaron las areas, hacer algo
+                }
+
+                var areaRandom = areasDisponibles.ElementAtOrDefault(new Random().Next(0, areasDisponibles.Count()))
+                    .IdArea;
+
                 pregunta = _preguntaRepository.ObtenerSiguientePregunta(areaRandom);
-                var nuevaListaDisponibles = areasDisponibles.Where(e => e.IdArea != areaRandom);
-                areaRandom = nuevaListaDisponibles.ElementAtOrDefault(new Random().Next(0, nuevaListaDisponibles.Count())).IdArea;
-            }
+                listaAreasDescartadas.Add(areaRandom);
+
+            } while (pregunta.IsNull() || pregunta.IdPregunta.Equals(0));
 
 
             return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente",pregunta));
