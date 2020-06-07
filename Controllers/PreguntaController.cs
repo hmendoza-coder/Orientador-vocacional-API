@@ -38,7 +38,6 @@ namespace OrientadorVocacionalAPI.Controllers
                 return BadRequest("El id de sesión proporcionado no es valido");
 
             var sesion = _sesionRepository.ObtenerSesion(idSesion);
-            var pregunta = new Pregunta();
 
             if (!_respuestaRepository.TieneRespuestas(sesion.IdSesion))
                 return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", _preguntaRepository.ObtenerPrimerPregunta()));
@@ -61,8 +60,16 @@ namespace OrientadorVocacionalAPI.Controllers
                 //Se acabaron las areas, hacer algo
             }
 
-            var randgen = new Random();
-            var areaRandom = areasDisponibles.ElementAtOrDefault(randgen.Next(0,areasDisponibles.Count()));
+            var areaRandom = areasDisponibles.ElementAtOrDefault(new Random().Next(0,areasDisponibles.Count())).IdArea;
+
+            var pregunta = new Pregunta();
+            while (pregunta.IsNull() || pregunta.IdPregunta.Equals(0))
+            {
+                pregunta = _preguntaRepository.ObtenerSiguientePregunta(areaRandom);
+                var nuevaListaDisponibles = areasDisponibles.Where(e => e.IdArea != areaRandom);
+                areaRandom = nuevaListaDisponibles.ElementAtOrDefault(new Random().Next(0, nuevaListaDisponibles.Count())).IdArea;
+            }
+
 
             return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente",pregunta));
         }

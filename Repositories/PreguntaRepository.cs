@@ -32,5 +32,16 @@ namespace OrientadorVocacionalAPI.Repositories
             return _connection.ExecuteScalar(query).NotNullToString().ToInt() > 0;
         }
 
+        public Pregunta ObtenerSiguientePregunta(int idArea)
+        {
+            StringBuilder query = new StringBuilder()
+                .AppendLine("SELECT p.* FROM pregunta p ")
+                .AppendLine("LEFT JOIN respuesta r ")
+                .AppendLine("USING(id_pregunta) ")
+                .AppendLine("WHERE r.id_pregunta is null ")
+                .AppendLine($"AND id_area = {idArea}");
+
+            return _connection.CreateDataTable(query.ToString()).ToList<Pregunta>().FirstOrDefault();
+        }
     }
 }

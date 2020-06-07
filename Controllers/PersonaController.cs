@@ -70,6 +70,8 @@ namespace OrientadorVocacionalAPI.Controllers
                 if(persona.IdPersona.IsNull() || persona.IdPersona.Equals(0))
                     return BadRequest("Error al ingresar la persona a la base de datos");
 
+                //TODO validar ids de domicilio
+
                 Credencial credencial = new Credencial
                 {
                     Password = personaDtoIn.Password, IdPersona = persona.IdPersona

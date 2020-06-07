@@ -9,7 +9,7 @@ namespace OrientadorVocacionalAPI.Models
     {
         public int IdPregunta { get; set; }
 
-        public string IdArea { get; set; }
+        public int IdArea { get; set; }
 
         public string Contenido { get; set; }
 
