@@ -19,8 +19,13 @@ namespace OrientadorVocacionalAPI.Config
         public static Pregunta PREGUNTA_FINAL = new Pregunta() {Contenido = "¿Te gustó este cuestionario?", IdArea = 0, IdPregunta = 0};
 
         /// <summary>
-        /// Es el divdendo que se utilizara para determinar la fraccion de preguntas que se deben de responder para cada sesion
+        /// Es el divisor que se utilizara para determinar la fraccion de preguntas que se deben de responder para cada sesion
         /// </summary>
         public static int INDICE_PARO = 3;
+
+        /// <summary>
+        /// Divisor que define que fraccion de las habilidades respondidas se necesita obtener para conseguir la habilidad
+        /// </summary>
+        public static int FRACCION_NECESARIA_PARA_HABILIDAD = 2;
     }
 }
