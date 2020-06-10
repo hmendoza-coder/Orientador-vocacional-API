@@ -53,5 +53,18 @@ namespace OrientadorVocacionalAPI.Repositories
             return _connection.CreateDataTable(query.NotNullToString()).ToList<Area>();
         }
 
+        public int ObtenerAreaFavorita(string idSesion)
+        {
+            StringBuilder query = new StringBuilder()
+                .AppendLine("select count(*) cantidad from respuesta r ")
+                .AppendLine("inner join pregunta p ")
+                .AppendLine("using(id_pregunta) ")
+                .AppendLine($"where id_sesion = '{idSesion}' ")
+                .AppendLine($"and id_opcion = {(short)OpcionRespuesta.Mucho} ")
+                .AppendLine("group by id_area ")
+                .AppendLine("order by cantidad desc");
+            return _connection.ExecuteScalar(query.NotNullToString()).NotNullToString("0").ToInt();
+        }
+
     }
 }

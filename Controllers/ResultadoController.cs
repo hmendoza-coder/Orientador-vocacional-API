@@ -18,15 +18,15 @@ namespace OrientadorVocacionalAPI.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<PreguntaController> _logger;
         private readonly HabilidadRepository _habilidadRepository;
-        private readonly SesionRepository _sesionRepository;
-        private readonly RespuestaRepository _respuestaRepository;
         private readonly AreaRepository _areaRepository;
+        private readonly CarreraRepository _carreraRepository;
 
         public ResultadoController(ILogger<PreguntaController> logger, IMapper mapper)
         {
             _logger = logger;
             _mapper = mapper;
             _habilidadRepository = new HabilidadRepository();
+            _carreraRepository = new CarreraRepository();
         }
 
         [HttpGet]
@@ -41,10 +41,18 @@ namespace OrientadorVocacionalAPI.Controllers
                 var p = habilidades.FirstOrDefault(x => x.IdHabilidad.Equals(habilidad.IdHabilidad));
                 if (p.IsNull())
                     continue;
-                if (habilidad.Cantidad > p.Cantidad/ConfiguracionGlobal.FRACCION_NECESARIA_PARA_HABILIDAD)
+                if (habilidad.Cantidad > p.Cantidad / ConfiguracionGlobal.FRACCION_NECESARIA_PARA_HABILIDAD)
                     habilidadesConseguidas.Add(habilidad);
             }
 
+            var idAreaFavorita = _areaRepository.ObtenerAreaFavorita(idSesion);
+            var listaCarreras = _carreraRepository.ObtenerCarreras(idAreaFavorita);
+
+            foreach (Carrera carrera in listaCarreras)
+            {
+                //Obtener las habilidades de la carrera
+                //por cada habilidad comparar
+            }
             return Ok("Resultado obtenido correctamente");
         }
     }
