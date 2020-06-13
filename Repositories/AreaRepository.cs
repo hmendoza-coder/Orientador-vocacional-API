@@ -56,7 +56,7 @@ namespace OrientadorVocacionalAPI.Repositories
         public int ObtenerAreaFavorita(string idSesion)
         {
             StringBuilder query = new StringBuilder()
-                .AppendLine("select count(*) cantidad from respuesta r ")
+                .AppendLine("select id_area, count(*) cantidad from respuesta r ")
                 .AppendLine("inner join pregunta p ")
                 .AppendLine("using(id_pregunta) ")
                 .AppendLine($"where id_sesion = '{idSesion}' ")

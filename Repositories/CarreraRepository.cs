@@ -19,7 +19,7 @@ namespace OrientadorVocacionalAPI.Repositories
         public List<Carrera> ObtenerCarreras(int idArea)
         {
             StringBuilder query = new StringBuilder()
-                .AppendLine("SELECT * FROM carrera ")
+                .AppendLine("SELECT * FROM carrera c inner join area_carrera ac using(id_carrera) ")
                 .AppendLine($"WHERE id_area ={idArea};");
             return _connection.CreateDataTable(query.ToString()).ToList<Carrera>();
         }
