@@ -11,7 +11,7 @@ namespace OrientadorVocacionalAPI.Config
         /// <summary>
         /// Es el numero de preguntas negativas que se aceptaran antes de cambiar de betar el area
         /// </summary>
-        public static int INDICE_RECHAZO = 2;
+        public static int INDICE_RECHAZO = 3;
 
         /// <summary>
         /// Pregunta que se mandara siempre que el cuestionario haya llegado a su fin

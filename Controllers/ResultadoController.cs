@@ -61,7 +61,7 @@ namespace OrientadorVocacionalAPI.Controllers
 
                 foreach (Habilidad habilidad in listaHabilidadesCarrera)
                 {
-                    if (habilidadesConseguidas.Contains(habilidad))
+                    if (habilidadesConseguidas.Any(e => e.IdHabilidad.Equals(habilidad.IdHabilidad)))
                         numHabilidadesCarrera++;
                 }
                 if (numHabilidadesCarrera.Equals(0))
