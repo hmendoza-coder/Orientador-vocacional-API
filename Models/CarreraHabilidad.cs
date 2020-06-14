@@ -11,7 +11,7 @@ namespace OrientadorVocacionalAPI.Models
         {
             CantidadHabilidadesTotales = cantidadHabilidadesTotales;
             CantidadHabilidadesConseguidas = cantidadHabilidadesConseguidas;
-            Compatibilidad = (cantidadHabilidadesConseguidas * 100)/ cantidadHabilidadesTotales;
+            Afinidad = (cantidadHabilidadesConseguidas * 100)/ cantidadHabilidadesTotales;
         }
         public int IdCarrera { get; set; }
 
@@ -21,6 +21,6 @@ namespace OrientadorVocacionalAPI.Models
 
         public int CantidadHabilidadesConseguidas { get; set; }
 
-        public double Compatibilidad { get; }
+        public double Afinidad { get; }
     }
 }

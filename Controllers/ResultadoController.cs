@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrientadorVocacionalAPI.Config;
+using OrientadorVocacionalAPI.DTOs;
 using OrientadorVocacionalAPI.Models;
 using OrientadorVocacionalAPI.Repositories;
 
@@ -21,6 +22,7 @@ namespace OrientadorVocacionalAPI.Controllers
         private readonly HabilidadRepository _habilidadRepository;
         private readonly AreaRepository _areaRepository;
         private readonly CarreraRepository _carreraRepository;
+        private readonly ResultadoRepository _resultadoRepository;
 
         public ResultadoController(ILogger<PreguntaController> logger, IMapper mapper)
         {
@@ -29,6 +31,7 @@ namespace OrientadorVocacionalAPI.Controllers
             _habilidadRepository = new HabilidadRepository();
             _carreraRepository = new CarreraRepository();
             _areaRepository = new AreaRepository();
+            _resultadoRepository = new ResultadoRepository();
         }
 
         [HttpGet]
@@ -69,8 +72,19 @@ namespace OrientadorVocacionalAPI.Controllers
                 };
                 listaCarreraHabilidad.Add(carreraHabilidad);
             }
-            //Guardar el resultado
-            return Ok(new Response<List<CarreraHabilidad>>(true, "Resultado generado correctamente", listaCarreraHabilidad));
+
+            List<ResultadoDtoOut> resultados = new List<ResultadoDtoOut>();
+            foreach (var elemento in listaCarreraHabilidad.OrderByDescending(e => e.Afinidad).Take(ConfiguracionGlobal.CANTIDAD_CARRERAS_GUARDADAS))
+            {
+                Resultado resultado = new Resultado
+                {
+                    IdSesion = idSesion, Afinidad = elemento.Afinidad, IdCarrera = elemento.IdCarrera
+                };
+                _resultadoRepository.Insert(resultado);
+                resultados.Add(_mapper.Map<ResultadoDtoOut>(elemento));
+            }
+
+            return Ok(new Response<List<ResultadoDtoOut>>(true, "Resultado generado correctamente", resultados));
         }
     }
 }

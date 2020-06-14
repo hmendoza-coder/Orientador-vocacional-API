@@ -27,5 +27,10 @@ namespace OrientadorVocacionalAPI.Config
         /// Divisor que define que fraccion de las habilidades respondidas se necesita obtener para conseguir la habilidad
         /// </summary>
         public static int FRACCION_NECESARIA_PARA_HABILIDAD = 2;
+
+        /// <summary>
+        /// Define el numero de registros por test que seran guardados en la tabla de resultados
+        /// </summary>
+        public static int CANTIDAD_CARRERAS_GUARDADAS = 3;
     }
 }
