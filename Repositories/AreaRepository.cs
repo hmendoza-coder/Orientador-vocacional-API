@@ -48,8 +48,9 @@ namespace OrientadorVocacionalAPI.Repositories
         public List<Area> ObtenerAreasExcepto(List<int> areas)
         { 
             StringBuilder query = new StringBuilder()
-                .AppendLine("SELECT * FROM area ")
-                .AppendLine($"WHERE id_area NOT IN ({string.Join(", ", areas)})");
+                .AppendLine("SELECT * FROM area ");
+                if(!areas.Count.Equals(0))
+                    query.AppendLine($"WHERE id_area NOT IN ({string.Join(", ", areas)})");
             return _connection.CreateDataTable(query.NotNullToString()).ToList<Area>();
         }
 
