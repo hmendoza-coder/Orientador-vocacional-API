@@ -47,7 +47,11 @@ namespace OrientadorVocacionalAPI.Controllers
             var sesion = _sesionRepository.ObtenerSesion(idSesion);
 
             if(CuestionarioFinalizado(idSesion))
-                return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", ConfiguracionGlobal.PREGUNTA_FINAL));
+            {
+                _sesionRepository.MarcarTestFinalizado(idSesion);
+                return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente",
+                    ConfiguracionGlobal.PREGUNTA_FINAL));
+            }
 
             if (!_respuestaRepository.TieneRespuestas(sesion.IdSesion))
                 return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", _preguntaRepository.ObtenerPrimerPregunta()));
@@ -67,7 +71,11 @@ namespace OrientadorVocacionalAPI.Controllers
                 var areasDisponibles = _areaRepository.ObtenerAreasExcepto(listaAreasDescartadas);
 
                 if (areasDisponibles.Count().Equals(0))
-                    return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente", ConfiguracionGlobal.PREGUNTA_FINAL));
+                {
+                    _sesionRepository.MarcarTestFinalizado(idSesion);
+                    return Ok(new Response<Pregunta>(true, "Pregunta obtenida correctamente",
+                        ConfiguracionGlobal.PREGUNTA_FINAL));
+                }
                 
                 var areaRandom = areasDisponibles.ElementAtOrDefault(new Random().Next(0, areasDisponibles.Count()))
                     .IdArea;

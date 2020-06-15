@@ -23,6 +23,7 @@ namespace OrientadorVocacionalAPI.Controllers
         private readonly AreaRepository _areaRepository;
         private readonly CarreraRepository _carreraRepository;
         private readonly ResultadoRepository _resultadoRepository;
+        private readonly SesionRepository _sesionRepository;
 
         public ResultadoController(ILogger<PreguntaController> logger, IMapper mapper)
         {
@@ -32,11 +33,15 @@ namespace OrientadorVocacionalAPI.Controllers
             _carreraRepository = new CarreraRepository();
             _areaRepository = new AreaRepository();
             _resultadoRepository = new ResultadoRepository();
+            _sesionRepository = new SesionRepository();
         }
 
         [HttpGet]
         public ActionResult GenerarResultado(string idSesion)
         {
+            if(!_sesionRepository.TestFinalizado(idSesion))
+                return BadRequest("La sesion no tiene finalizada el test");
+
             var habilidadesRespondidas = _habilidadRepository.ContarHabilidadesRespondidas(idSesion);
             var habilidadesPotenciales = _habilidadRepository.ContarHabilidadesPotenciales(idSesion);
             var habilidadesConseguidas = new List<Habilidad>();

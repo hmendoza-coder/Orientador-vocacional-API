@@ -11,6 +11,7 @@ namespace OrientadorVocacionalAPI.Models
         {
             IdSesion = Guid.NewGuid().ToString();
             FechaInicio = DateTime.Now;
+            TestFinalizado ="N";
         }
         public string IdSesion { get; set; }
 
@@ -19,5 +20,7 @@ namespace OrientadorVocacionalAPI.Models
         public DateTime FechaInicio { get; set; }
 
         public DateTime FechaFin { get; set; }
+
+        public string TestFinalizado { get; set; }
     }
 }

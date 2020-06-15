@@ -18,7 +18,7 @@ namespace OrientadorVocacionalAPI.Repositories
 
         public void Insert(Sesion sesion)
         {
-            string query = $"INSERT INTO sesion VALUES('{sesion.IdSesion}',{sesion.IdPersona}, '{sesion.FechaInicio.ToMySqlDateTimeFormat()}', null)";
+            string query = $"INSERT INTO sesion VALUES('{sesion.IdSesion}',{sesion.IdPersona}, '{sesion.FechaInicio.ToMySqlDateTimeFormat()}', null, '{sesion.TestFinalizado}')";
             _connection.ExecuteNonQuery(query);
         }
 
@@ -50,6 +50,18 @@ namespace OrientadorVocacionalAPI.Repositories
         {
             string query = $"SELECT * FROM sesion WHERE id_sesion = '{idSesion}'";
             return _connection.CreateDataTable(query).ToList<Sesion>().FirstOrDefault();
+        }
+
+        public void MarcarTestFinalizado(string idSesion)
+        {
+            string query = $"UPDATE sesion SET Test_Finalizado= 'S' WHERE id_sesion = '{idSesion}'";
+            _connection.ExecuteNonQuery(query);
+        }
+
+        public bool TestFinalizado(string idSesion)
+        {
+            string query = $"SELECT test_finalizado FROM sesion where id_sesion ='{idSesion}'";
+            return _connection.ExecuteScalar(query).NotNullToString("N").Equals("S");
         }
     }
 }
