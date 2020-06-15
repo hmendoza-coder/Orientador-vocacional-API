@@ -24,6 +24,7 @@ namespace OrientadorVocacionalAPI.Controllers
         private readonly CarreraRepository _carreraRepository;
         private readonly ResultadoRepository _resultadoRepository;
         private readonly SesionRepository _sesionRepository;
+        private readonly PersonaRepository _personaRepository;
 
         public ResultadoController(ILogger<PreguntaController> logger, IMapper mapper)
         {
@@ -34,6 +35,19 @@ namespace OrientadorVocacionalAPI.Controllers
             _areaRepository = new AreaRepository();
             _resultadoRepository = new ResultadoRepository();
             _sesionRepository = new SesionRepository();
+            _personaRepository = new PersonaRepository();
+        }
+
+        [HttpGet("Historico")]
+        public ActionResult ObtenerHistorico(string idSesion)
+        {
+            var idPersona = _personaRepository.ObtenerIdPersonaBySesion(idSesion);
+            if (idPersona.IsNull() || idPersona.Equals(0))
+                return BadRequest("La sesion no es valida o la persona no tiene guardado ningun resultado");
+
+            var resultados = _resultadoRepository.ObtenerResultadosHistorico(idPersona);
+
+            return Ok(new Response<List<ResultadoHistoricoDtOut>>(true, "Resultado generado correctamente", resultados));
         }
 
         [HttpGet]

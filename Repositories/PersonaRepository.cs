@@ -55,5 +55,14 @@ namespace OrientadorVocacionalAPI
             string query = $"DELETE FROM persona where correo = '{correo}'";
             _connection.ExecuteNonQuery(query);
         }
+
+        public int ObtenerIdPersonaBySesion(string idSesion)
+        {
+            StringBuilder query = new StringBuilder("SELECT p.id_persona FROM persona p ")
+                .AppendLine("INNER JOIN sesion s ")
+                .AppendLine("USING(id_persona) ")
+                .AppendLine($"WHERE id_sesion = '{idSesion}' ");
+            return _connection.ExecuteScalar(query.ToString()).NotNullToString("0").ToInt();
+        }
     }
 }
