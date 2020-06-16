@@ -32,11 +32,11 @@ namespace OrientadorVocacionalAPI.Repositories
             return _connection.ExecuteScalar(query).NotNullToString().ToInt() > 0;
         }
 
-        public Pregunta ObtenerSiguientePregunta(int idArea)
+        public Pregunta ObtenerSiguientePregunta(int idArea, string idSesion)
         {
             StringBuilder query = new StringBuilder()
                 .AppendLine("SELECT p.* FROM pregunta p ")
-                .AppendLine("LEFT JOIN respuesta r ")
+                .AppendLine($"LEFT JOIN (select * from respuesta where id_sesion='{idSesion}') r ")
                 .AppendLine("USING(id_pregunta) ")
                 .AppendLine("WHERE r.id_pregunta is null ")
                 .AppendLine($"AND id_area = {idArea}");

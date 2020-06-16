@@ -62,7 +62,7 @@ namespace OrientadorVocacionalAPI.Controllers
             
             List<int> listaAreasDescartadas = _areaRepository.ObtenerAreasDescartadas(idSesion).Select(descartada => descartada.IdArea).ToList();
 
-            if (ultimaRespuesta.IdRespuesta.Equals(OpcionRespuesta.Nada))
+            if (ultimaRespuesta.IdOpcion.Equals((short)OpcionRespuesta.Nada))
                 listaAreasDescartadas.Add(ultimaArea.IdArea);
 
             Pregunta pregunta;
@@ -80,7 +80,7 @@ namespace OrientadorVocacionalAPI.Controllers
                 var areaRandom = areasDisponibles.ElementAtOrDefault(new Random().Next(0, areasDisponibles.Count()))
                     .IdArea;
 
-                pregunta = _preguntaRepository.ObtenerSiguientePregunta(areaRandom);
+                pregunta = _preguntaRepository.ObtenerSiguientePregunta(areaRandom, idSesion);
                 listaAreasDescartadas.Add(areaRandom);
 
             } while (pregunta.IsNull() || pregunta.IdPregunta.Equals(0));
