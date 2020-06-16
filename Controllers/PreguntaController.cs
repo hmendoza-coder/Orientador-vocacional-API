@@ -62,7 +62,7 @@ namespace OrientadorVocacionalAPI.Controllers
             
             List<int> listaAreasDescartadas = _areaRepository.ObtenerAreasDescartadas(idSesion).Select(descartada => descartada.IdArea).ToList();
 
-            if (ultimaRespuesta.IdOpcion.Equals((short)OpcionRespuesta.Nada))
+            if (ultimaRespuesta.IdOpcion.Equals((short)OpcionRespuesta.Nada) && !listaAreasDescartadas.Contains(ultimaArea.IdArea) && !listaAreasDescartadas.Count.Equals(_areaRepository.ContarAreasTotales()-1))
                 listaAreasDescartadas.Add(ultimaArea.IdArea);
 
             Pregunta pregunta;

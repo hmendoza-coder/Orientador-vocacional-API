@@ -67,5 +67,10 @@ namespace OrientadorVocacionalAPI.Repositories
             return _connection.ExecuteScalar(query.NotNullToString()).NotNullToString("0").ToInt();
         }
 
+        public int ContarAreasTotales()
+        {
+            string query = "SELECT COUNT(*) FROM area;";
+            return _connection.ExecuteScalar(query).NotNullToString("0").ToInt();
+        }
     }
 }
