@@ -7,7 +7,7 @@ namespace OrientadorVocacionalAPI.DTOs
 {
     public class ResultadoHistoricoDtOut
     {
-        public DateTime Fecha { get; set; }
+        public string Fecha { get; set; }
 
         public string Carrera { get; set; }
 

@@ -27,14 +27,15 @@ namespace OrientadorVocacionalAPI.Repositories
         public List<ResultadoHistoricoDtOut> ObtenerResultadosHistorico(int idPersona)
         {
             StringBuilder query = new StringBuilder()
-                .AppendLine("SELECT fecha_inicio as fecha, c.nombre as carrera, afinidad FROM sesion s ")
+                .AppendLine("SELECT cast(fecha_inicio as char) as fecha, c.nombre as carrera, afinidad FROM sesion s ")
                 .AppendLine("inner join persona p ")
                 .AppendLine("using(id_persona) ")
                 .AppendLine("inner join resultado r ")
                 .AppendLine("using(id_sesion) ")
                 .AppendLine("inner join carrera c ")
                 .AppendLine("using(id_carrera) ")
-                .AppendLine($"WHERE id_persona = {idPersona}");
+                .AppendLine($"WHERE id_persona = {idPersona}")
+                .AppendLine("ORDER BY afinidad desc");
             return _connection.CreateDataTable(query.ToString()).ToList<ResultadoHistoricoDtOut>();
         }
     }
