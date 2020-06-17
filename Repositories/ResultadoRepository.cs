@@ -34,7 +34,8 @@ namespace OrientadorVocacionalAPI.Repositories
                 .AppendLine("using(id_sesion) ")
                 .AppendLine("inner join carrera c ")
                 .AppendLine("using(id_carrera) ")
-                .AppendLine($"WHERE id_persona = {idPersona}")
+                .AppendLine($"WHERE id_persona = {idPersona} ")
+                .AppendLine("AND Test_finalizado ='S'")
                 .AppendLine("ORDER BY afinidad desc");
             return _connection.CreateDataTable(query.ToString()).ToList<ResultadoHistoricoDtOut>();
         }
